@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GymflowApplication {
 
+
+    /**just comment*/
 	public static void main(String[] args) {
 		SpringApplication.run(GymflowApplication.class, args);
 	}
