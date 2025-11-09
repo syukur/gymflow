@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RefreshTokenRequest {
+public class AuthResponse {
+    private String jwt;
     private String refreshToken;
 }
