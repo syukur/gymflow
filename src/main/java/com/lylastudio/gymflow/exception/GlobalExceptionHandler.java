@@ -2,8 +2,10 @@ package com.lylastudio.gymflow.exception;
 
 import com.lylastudio.gymflow.dto.ApiResponse;
 import com.lylastudio.gymflow.util.ApiResponseUtil;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,6 +21,20 @@ public class GlobalExceptionHandler {
 
     public GlobalExceptionHandler(ApiResponseUtil responseUtil) {
         this.responseUtil = responseUtil;
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<?>> handleBadCredentialsException(BadCredentialsException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(responseUtil.error("auth.bad.credentials"));
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<ApiResponse<?>> handleSignatureException(SignatureException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(responseUtil.error("auth.jwt.signature.invalid"));
     }
 
     @ExceptionHandler(RuntimeException.class)
