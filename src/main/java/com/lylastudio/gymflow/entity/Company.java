@@ -24,6 +24,5 @@ public class Company {
     private String address;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Member> members;
+    private List<MMember> members;
 }
-

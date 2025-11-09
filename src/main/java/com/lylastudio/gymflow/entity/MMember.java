@@ -6,13 +6,13 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "members")
+@Table(name = "m_member")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
+public class gi MMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

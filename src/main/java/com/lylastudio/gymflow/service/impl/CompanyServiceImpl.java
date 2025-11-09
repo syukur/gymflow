@@ -4,7 +4,7 @@ import com.lylastudio.gymflow.dto.CompanyRequest;
 import com.lylastudio.gymflow.dto.CompanyResponse;
 import com.lylastudio.gymflow.dto.MemberResponse;
 import com.lylastudio.gymflow.entity.Company;
-import com.lylastudio.gymflow.entity.Member;
+import com.lylastudio.gymflow.entity.MMember;
 import com.lylastudio.gymflow.repository.CompanyRepository;
 import com.lylastudio.gymflow.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -85,7 +85,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 
-    private MemberResponse mapMember(Member m) {
+    private MemberResponse mapMember(MMember m) {
         return MemberResponse.builder()
                 .id(m.getId())
                 .fullName(m.getFullName())
@@ -97,4 +97,3 @@ public class CompanyServiceImpl implements CompanyService {
                 .build();
     }
 }
-

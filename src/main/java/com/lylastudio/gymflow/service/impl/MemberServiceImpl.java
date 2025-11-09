@@ -2,8 +2,8 @@ package com.lylastudio.gymflow.service.impl;
 
 import com.lylastudio.gymflow.dto.MemberRequest;
 import com.lylastudio.gymflow.dto.MemberResponse;
-import com.lylastudio.gymflow.entity.Member;
-import com.lylastudio.gymflow.repository.MemberRepository;
+import com.lylastudio.gymflow.entity.MMember;
+import com.lylastudio.gymflow.repository.MMemberRepository;
 import com.lylastudio.gymflow.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberRepository memberRepository;
+    private final MMemberRepository memberRepository;
 
     @Override
     public MemberResponse registerMember(MemberRequest request) {
@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException("validation.phone.already.exists");
         });
 
-        Member member = Member.builder()
+        MMember member = MMember.builder()
                 .fullName(request.getFullName())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
 
         memberRepository.save(member);
         return mapToResponse(member);
-//        Member saved = memberRepository.save(member);
+//        MMember saved = memberRepository.save(member);
 //
 //        return MemberResponse.builder()
 //                .id(saved.getId())
@@ -62,7 +62,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberResponse getMemberById(Long id) {
-        Member member = memberRepository.findById(id)
+        MMember member = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("member.not.found"));
         return mapToResponse(member);
     }
@@ -76,7 +76,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberResponse updateMember(Long id, MemberRequest request) {
-        Member member = memberRepository.findById(id)
+        MMember member = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("member.not.found"));
 
         member.setFullName(request.getFullName());
@@ -93,7 +93,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.deleteById(id);
     }
 
-    private MemberResponse mapToResponse(Member member) {
+    private MemberResponse mapToResponse(MMember member) {
         return MemberResponse.builder()
                 .id(member.getId())
                 .fullName(member.getFullName())
