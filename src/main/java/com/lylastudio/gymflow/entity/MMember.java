@@ -38,5 +38,5 @@ public class MMember {
     // Relation to Company (many members can belong to one company)
     @ManyToOne
     @JoinColumn(name = "company_id")
-    private Company company;
+    private MCompany company;
 }

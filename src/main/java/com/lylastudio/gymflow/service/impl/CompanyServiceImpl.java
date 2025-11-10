@@ -3,9 +3,9 @@ package com.lylastudio.gymflow.service.impl;
 import com.lylastudio.gymflow.dto.CompanyRequest;
 import com.lylastudio.gymflow.dto.CompanyResponse;
 import com.lylastudio.gymflow.dto.MemberResponse;
-import com.lylastudio.gymflow.entity.Company;
+import com.lylastudio.gymflow.entity.MCompany;
 import com.lylastudio.gymflow.entity.MMember;
-import com.lylastudio.gymflow.repository.CompanyRepository;
+import com.lylastudio.gymflow.repository.MCompanyRepository;
 import com.lylastudio.gymflow.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
 
-    private final CompanyRepository companyRepository;
+    private final MCompanyRepository companyRepository;
 
     @Override
     public CompanyResponse createCompany(CompanyRequest request) {
-        Company company = Company.builder()
+        MCompany company = MCompany.builder()
                 .companyName(request.getCompanyName())
                 .address(request.getAddress())
                 .build();
@@ -37,7 +37,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyResponse getCompanyById(Long id) {
-        Company company = companyRepository.findById(id)
+        MCompany company = companyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("company.not.found"));
         return mapToResponse(company);
     }
@@ -54,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyResponse updateCompany(Long id, CompanyRequest request) {
-        Company company = companyRepository.findById(id)
+        MCompany company = companyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("company.not.found"));
 
         company.setCompanyName(request.getCompanyName());
@@ -69,7 +69,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.deleteById(id);
     }
 
-    private CompanyResponse mapToResponse(Company company) {
+    private CompanyResponse mapToResponse(MCompany company) {
         List<MemberResponse> members = null;
         if (company.getMembers() != null) {
             members = company.getMembers().stream()
