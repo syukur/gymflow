@@ -32,11 +32,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void register( String email, String name, String sub ) {
+    public UserDetails registerGoogleUser( String email, String name, String sub ) {
         MUser user = new MUser();
         user.setUsername(name);
         user.setPassword(sub);
         user.setEmail(email);
-        userRepository.save(user);
+
+        return new AppUser(user);
     }
 }

@@ -80,7 +80,7 @@ public class AuthService {
 //                );
 
         UserDetails userDetails= userService.loadByEmail(email).orElseGet(()->
-            memberService.registerGoogleUser(email, name, sub)
+                userService.registerGoogleUser(email, name, sub)
             );
 
         // 3. Buat JWT token
