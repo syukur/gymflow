@@ -25,4 +25,7 @@ public class MUser {
 
     @Column(name = "refresh_token")
     private String refreshToken;
+
+    @Column(name = "email")
+    private String email;
 }

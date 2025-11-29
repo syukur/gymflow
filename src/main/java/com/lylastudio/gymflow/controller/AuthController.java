@@ -42,4 +42,5 @@ public class AuthController {
         AuthResponse response = authService.refreshToken(refreshTokenRequest.getRefreshToken());
         return ResponseEntity.ok(responseUtil.success("auth.refresh.success", response));
     }
+
 }
