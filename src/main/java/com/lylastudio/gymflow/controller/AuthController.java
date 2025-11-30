@@ -34,6 +34,13 @@ public class AuthController {
         return ResponseEntity.ok(responseUtil.success("auth.login.success", response));
     }
 
+    @Operation(description = "User login with google")
+    @PostMapping("/googleLogin")
+    public ResponseEntity<ApiResponse<AuthResponse>> googleLogin(@Valid @RequestBody AuthRequest authRequest) {
+        AuthResponse response = authService.login(authRequest);
+        return ResponseEntity.ok(responseUtil.success("auth.login.success", response));
+    }
+
     @Operation(summary = "Refresh token endpoint", description = "For refresh new token, if access token is expired")
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
