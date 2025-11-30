@@ -2,6 +2,7 @@ package com.lylastudio.gymflow.controller;
 
 import com.lylastudio.gymflow.dto.*;
 import com.lylastudio.gymflow.service.AuthService;
+import com.lylastudio.gymflow.service.GoogleAuthService;
 import com.lylastudio.gymflow.util.ApiResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final ApiResponseUtil responseUtil;
+    private final GoogleAuthService googleAuthService;
 
     @Operation(summary = "User register endpoint", description = "For register new user")
     @PostMapping("/register")
@@ -36,8 +38,8 @@ public class AuthController {
 
     @Operation(description = "User login with google")
     @PostMapping("/googleLogin")
-    public ResponseEntity<ApiResponse<AuthResponse>> googleLogin(@Valid @RequestBody AuthRequest authRequest) {
-        AuthResponse response = authService.login(authRequest);
+    public ResponseEntity<ApiResponse<GoogleAuthResponse>> googleLogin(@Valid @RequestBody GoogleAuthRequest googleAuthRequest) {
+        GoogleAuthResponse response = googleAuthService.login(googleAuthRequest);
         return ResponseEntity.ok(responseUtil.success("auth.login.success", response));
     }
 

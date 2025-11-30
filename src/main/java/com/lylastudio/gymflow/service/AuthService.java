@@ -54,42 +54,6 @@ public class AuthService {
         return new AuthResponse(jwt, refreshToken);
     }
 
-    @Transactional
-    public GoogleAuthResponse loginGoogle(GoogleAuthRequest googleAuthRequest) {
-
-        String idToken = googleAuthRequest.getIdToken();
-
-        // 1. Verifikasi token
-        GoogleIdToken.Payload payload = null;
-        try {
-            payload = googleAuthService.verify(idToken);
-        } catch (Exception e) {
-            log.error("Error verifying Google ID Token: {}", e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
-
-        String email = payload.getEmail();
-        String name  = (String) payload.get("name");
-        String sub   = payload.getSubject(); // google unique ID
-
-        // 2. Cari atau buat user baru
-//        MUser user = memberService.findByEmail(email)
-//                .orElseGet(() ->
-//                        memberService.registerGoogleUser(email, name, sub)
-//                );
-
-        UserDetails userDetails= userService.loadByEmail(email).orElseGet(()->
-                userService.registerGoogleUser(email, name, sub)
-            );
-
-        // 3. Buat JWT token
-        String accessToken  = jwtUtil.generateToken(userDetails);
-        String refreshToken = jwtUtil.generateRefreshToken(userDetails);
-
-        // 4. Response
-        return new GoogleAuthResponse(accessToken, refreshToken, email, name);
-    }
-
     @Transactional(readOnly = true)
     public AuthResponse refreshToken(String refreshToken) {
         String username = jwtUtil.extractUsername(refreshToken);
