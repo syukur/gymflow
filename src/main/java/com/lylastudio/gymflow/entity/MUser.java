@@ -28,4 +28,12 @@ public class MUser {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "auth_provider")
+    private String authProvider;
+
+    @Column(name = "sub")
+    private String sub;
+
+
 }

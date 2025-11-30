@@ -1,10 +1,7 @@
 package com.lylastudio.gymflow.service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.lylastudio.gymflow.dto.AuthRequest;
-import com.lylastudio.gymflow.dto.AuthResponse;
-import com.lylastudio.gymflow.dto.GoogleAuthRequest;
-import com.lylastudio.gymflow.dto.GoogleAuthResponse;
+import com.lylastudio.gymflow.dto.*;
 import com.lylastudio.gymflow.entity.MUser;
 import com.lylastudio.gymflow.repository.MUserRepository;
 import com.lylastudio.gymflow.security.JwtUtil;
@@ -31,10 +28,12 @@ public class AuthService {
     private final GoogleAuthService googleAuthService;
 
     @Transactional
-    public void register(AuthRequest authRequest) {
+    public void register(UserRegisterRequest userRegisterRequest) {
         MUser user = new MUser();
-        user.setUsername(authRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(authRequest.getPassword()));
+        user.setUsername(userRegisterRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setAuthProvider("EMAIL");
         userRepository.save(user);
     }
 

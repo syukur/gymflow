@@ -52,7 +52,7 @@ public class ApiResponseUtil {
                 .errors(List.of(
                         ApiResponse.ErrorDetail.builder()
                                 .field(null)
-                                .error(message)
+                                .error(localize(message))
                                 .build()
                 ))
                 .build();
