@@ -25,7 +25,6 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtUtil jwtUtil;
-    private final GoogleAuthService googleAuthService;
 
     @Transactional
     public void register(UserRegisterRequest userRegisterRequest) {
