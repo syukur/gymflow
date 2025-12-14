@@ -1,7 +1,7 @@
 package com.lylastudio.gymflow.controller;
 
 import com.lylastudio.gymflow.dto.*;
-import com.lylastudio.gymflow.service.AuthService;
+import com.lylastudio.gymflow.service.impl.AuthServiceImpl;
 import com.lylastudio.gymflow.util.ApiResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final AuthService authService;
+    private final AuthServiceImpl authService;
     private final ApiResponseUtil responseUtil;
 
     @Operation(description = "For set user status, enable or disable")

@@ -1,6 +1,6 @@
 package com.lylastudio.gymflow.security;
 
-import com.lylastudio.gymflow.service.UserService;
+import com.lylastudio.gymflow.service.impl.UserServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final JwtUtil jwtUtil;
 
     @Override

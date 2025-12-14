@@ -1,8 +1,8 @@
 package com.lylastudio.gymflow.controller;
 
 import com.lylastudio.gymflow.dto.*;
-import com.lylastudio.gymflow.service.AuthService;
-import com.lylastudio.gymflow.service.GoogleAuthService;
+import com.lylastudio.gymflow.service.impl.AuthServiceImpl;
+import com.lylastudio.gymflow.service.impl.GoogleAuthServiceImpl;
 import com.lylastudio.gymflow.util.ApiResponseUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthServiceImpl authService;
     private final ApiResponseUtil responseUtil;
-    private final GoogleAuthService googleAuthService;
+    private final GoogleAuthServiceImpl googleAuthService;
 
     @Operation(summary = "User register endpoint", description = "For register new user")
     @PostMapping("/register")
