@@ -13,22 +13,26 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "m_branch")
-public class MBranch extends BaseEntityWithId {
+@Table(name = "m_package")
+public class MPackage extends BaseEntityWithId {
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "description", length = 150)
+    private String description;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "duration")
+    private int duration;
+
+    @Column(name = "gym_access")
+    private boolean gymAccess;
+
+    @Column(name = "include_pt")
+    private boolean includePt;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
     private MCompany company;
 
-    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TCheckIn> checkIns;
 }

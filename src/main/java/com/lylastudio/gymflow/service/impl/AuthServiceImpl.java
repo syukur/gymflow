@@ -31,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     public void register(UserRegisterRequest userRegisterRequest) {
         MUser user = new MUser();
         user.setUsername(userRegisterRequest.getUsername());
+        user.setSureName(userRegisterRequest.getSureName());
         user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
         user.setEmail(userRegisterRequest.getEmail());
         user.setAuthProvider("EMAIL");

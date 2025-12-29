@@ -17,6 +17,10 @@ public class UserRegisterRequest {
     @NotBlank(message = "{validation.username.required}")
     private String username;
 
+    @Schema(description = "User Sure Name")
+    @NotBlank(message = "{validation.sureName.required}")
+    private String sureName;
+
     @Schema(description = "User password")
     @NotBlank(message = "{validation.password.required}")
     private String password;
