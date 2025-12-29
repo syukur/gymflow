@@ -3,6 +3,7 @@ package com.lylastudio.gymflow.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "m_member")
@@ -34,4 +35,8 @@ public class MMember extends BaseEntityWithId {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private MCompany company;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TCheckIn> checkIns;
+
 }

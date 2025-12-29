@@ -22,7 +22,7 @@ public class TRoleEnpoint extends  BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("endpointId") // Memetakan field ini ke endpointId di EmbeddedId
-    @JoinColumn(name = "endpoint", nullable = false)
+    @JoinColumn(name = "endpoint_id", nullable = false)
     private MEnpoint endpoint;
 
     // --- CONVENIENCE CONSTRUCTOR ---

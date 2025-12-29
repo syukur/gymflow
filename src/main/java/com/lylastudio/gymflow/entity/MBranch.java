@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,4 +28,7 @@ public class MBranch extends BaseEntityWithId {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private MCompany company;
+
+    @OneToMany(mappedBy = "branch", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TCheckIn> checkIns;
 }
