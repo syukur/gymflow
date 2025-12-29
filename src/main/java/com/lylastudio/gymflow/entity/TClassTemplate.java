@@ -36,7 +36,7 @@ public class TClassTemplate extends  BaseEntity {
 
     // Relasi One-to-Many ke Detail
     @OneToMany(mappedBy = "classTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TClassTemplateDetail> classTemplateDetails;
+    private Set<TClassTemplateDetail> details;
 
 
 }
