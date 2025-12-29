@@ -11,7 +11,7 @@ import java.util.List;
 public class CompanyResponse {
 
     @Schema(description = "Company Id")
-    private Long id;
+    private String id;
 
     @Schema(description = "Company Name")
     private String companyName;

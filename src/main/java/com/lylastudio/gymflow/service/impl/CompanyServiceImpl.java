@@ -27,7 +27,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyResponse createCompany(CompanyRequest request) {
         MCompany company = MCompany.builder()
-                .companyName(request.getCompanyName())
+                .name(request.getCompanyName())
                 .address(request.getAddress())
                 .build();
 
@@ -57,7 +57,7 @@ public class CompanyServiceImpl implements CompanyService {
         MCompany company = companyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("company.not.found"));
 
-        company.setCompanyName(request.getCompanyName());
+        company.setName(request.getCompanyName());
         company.setAddress(request.getAddress());
 
         companyRepository.save(company);
@@ -79,7 +79,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         return CompanyResponse.builder()
                 .id(company.getId())
-                .companyName(company.getCompanyName())
+                .companyName(company.getName())
                 .address(company.getAddress())
                 .members(members)
                 .build();

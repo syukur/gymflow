@@ -16,10 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "m_user")
-public class MUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+public class MUser extends BaseEntityWithId{
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -39,13 +36,9 @@ public class MUser {
     @Column(name = "sub")
     private String sub;
 
-    @CreationTimestamp
-    @Column(name = "created_at"/*, nullable = false*/, updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private  LocalDateTime updatedAt;
-
+    // Relation to Company (many User can belong to one company)
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private MCompany company;
 
 }

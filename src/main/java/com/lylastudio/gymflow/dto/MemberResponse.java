@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class MemberResponse {
 
     @Schema(description = "Member id")
-    private Long id;
+    private String id;
 
     @Schema(description = "Member full name")
     private String fullName;
