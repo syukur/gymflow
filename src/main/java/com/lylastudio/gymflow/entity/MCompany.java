@@ -29,5 +29,8 @@ public class MCompany extends BaseEntityWithId{
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY)
     private  List<TUserInvitation> userInvitations;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MClassType> classTypes;
 }
 
