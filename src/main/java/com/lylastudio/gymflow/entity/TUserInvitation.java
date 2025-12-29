@@ -34,6 +34,6 @@ public class TUserInvitation extends BaseEntityWithId{
     private MCompany company;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "role_id")
     private MRole role;
 }
