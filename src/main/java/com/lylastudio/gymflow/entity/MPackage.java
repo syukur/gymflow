@@ -28,8 +28,8 @@ public class MPackage extends BaseEntityWithId {
     @Column(name = "gym_access")
     private boolean gymAccess;
 
-    @Column(name = "include_pt")
-    private boolean includePt;
+    @Column(name = "price")
+    private long price;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
