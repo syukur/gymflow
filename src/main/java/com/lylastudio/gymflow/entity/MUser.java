@@ -18,22 +18,22 @@ import java.time.LocalDateTime;
 @Table(name = "m_user")
 public class MUser extends BaseEntityWithId{
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
 
     @Column(name = "refresh_token")
     private String refreshToken;
 
-    @Column(name = "email",nullable = false, unique = true)
+    @Column(name = "email",nullable = false, unique = true, length = 100)
     private String email;
 
     @Column(name = "auth_provider")
     private String authProvider;
 
-    @Column(name = "sub")
+    @Column(name = "sub", length = 100)
     private String sub;
 
     // Relation to Company (many User can belong to one company)
