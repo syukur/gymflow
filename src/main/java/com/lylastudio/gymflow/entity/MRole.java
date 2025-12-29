@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,5 +25,9 @@ public class MRole extends BaseEntityWithId{
     @ManyToOne
     @JoinColumn(name = "company_id")
     private MCompany company;
+
+    // Relasi One-to-Many ke Entity Penghubung (RoleEndpoint)
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TRoleEnpoint> roleEndpoints;
 
 }

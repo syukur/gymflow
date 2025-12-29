@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,9 +17,12 @@ import lombok.Setter;
 public class MEnpoint extends BaseEntityWithId {
 
     @Column(name = "endpoint", nullable = false)
-    private String username;
+    private String enpoint;
 
     @Column(name = "description", length = 100)
     private String description;
+
+    @OneToMany(mappedBy = "endpoint", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TRoleEnpoint> roleEnpoints;
 
 }
