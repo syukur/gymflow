@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,5 +25,8 @@ public class MClassType extends BaseEntityWithId {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private MCompany company;
+
+    @OneToMany(mappedBy = "classType", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TClassTemplate> classTemplates;
 
 }

@@ -40,4 +40,6 @@ public class MUser extends BaseEntityWithId{
     @JoinColumn(name = "company_id")
     private MCompany company;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private MTrainer trainerProfile;
 }
