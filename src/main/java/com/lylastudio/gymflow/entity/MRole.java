@@ -20,7 +20,7 @@ public class MRole extends BaseEntityWithId{
     private String name;
 
     @Column(name = "description", length = 150)
-    private String password;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
@@ -29,5 +29,8 @@ public class MRole extends BaseEntityWithId{
     // Relasi One-to-Many ke Entity Penghubung (RoleEndpoint)
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TRoleEnpoint> roleEndpoints;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<TUserInvitation> invitations;
 
 }
