@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "t_class_session")
@@ -31,5 +32,6 @@ public class TClassSession extends  BaseEntity {
     @Column(name = "description", length = 100)
     private String description;
 
-
+    @OneToMany(mappedBy = "classSession", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TClassSessionDetail> classSessionDetails;
 }

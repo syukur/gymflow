@@ -39,4 +39,7 @@ public class MMember extends BaseEntityWithId {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TCheckIn> checkIns;
 
+    // --- Relasi Baru: One-to-Many ke TAttendance ---
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TClassSessionDetail> classSessionDetails; // Nama field diubah agar lebih jelas
 }
