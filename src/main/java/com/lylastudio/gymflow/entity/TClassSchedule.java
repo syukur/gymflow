@@ -23,6 +23,9 @@ public class TClassSchedule extends  BaseEntity {
     @JoinColumn(name = "trainer_id", nullable = false)
     private MTrainer trainer;
 
+    @OneToOne(mappedBy = "classSchedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TClassSession classSession;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_type_id", nullable = false)
     private MClassType classType;
