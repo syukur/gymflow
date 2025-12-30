@@ -30,6 +30,9 @@ public class TClassSchedule extends  BaseEntity {
     @Column(name = "capacity")
     private int capacity;
 
+    @Column(name = "booked_count")
+    private int bookedCount;
+
     @Column(name = "start_training")
     private LocalDateTime startTraining;
 
