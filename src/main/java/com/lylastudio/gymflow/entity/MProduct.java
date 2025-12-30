@@ -19,6 +19,12 @@ public class MProduct extends BaseEntityWithId{
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
 
+    @Column(name = "cost_price", nullable = false)
+    private double costPrice;
+
+    @Column(name = "selling_price", nullable = false)
+    private double sellingPrice;
+
     @Column(name = "description", length = 150)
     private String description;
 
@@ -29,6 +35,9 @@ public class MProduct extends BaseEntityWithId{
     @ManyToOne
     @JoinColumn(name = "product_category_id")
     private MProductCategory productCategory;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<TSalesOrderDetail> orderDetails;
 
 
 }

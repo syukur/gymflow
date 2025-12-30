@@ -44,4 +44,7 @@ public class MUser extends BaseEntityWithId{
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private MTrainer trainerProfile;
+
+    @OneToMany(mappedBy = "cashier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TSalesOrder> salesOrders;
 }
