@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Comment;
 
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Comment("example: 3 month regular, 6 month regular")
 @Table(name = "m_package")
 public class MPackage extends BaseEntityWithId {
 
@@ -22,6 +24,7 @@ public class MPackage extends BaseEntityWithId {
     @Column(name = "description", length = 150)
     private String description;
 
+    @Comment("example : 30 day, 60 day, 90 day")
     @Column(name = "duration")
     private int duration;
 
