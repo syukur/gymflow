@@ -50,10 +50,13 @@ public class Init {
 
         companyRepository.findAll().forEach(company -> {
             log.info("Company: {}, {}", company.getName(), company.getId());
-            List<MRole> roles = company.getRoles();
-            log.info( String.valueOf(roles.size()) );
-
+//            company.getMembers().forEach(member -> {
+//                log.info("Member: {}, {}", member.getFullName(), member.getId());
+//
+//            });
         });
+
+
     }
 
     private void insertEndpoint() {
