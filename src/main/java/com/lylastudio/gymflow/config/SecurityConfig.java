@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
 @EnableWebSecurity
@@ -54,7 +56,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter, PlatformTransactionManager transactionManager) throws Exception {
         http.csrf(csrf -> csrf.disable())
 //                .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers(WHITE_LIST_URL).permitAll()
@@ -71,18 +73,22 @@ public class SecurityConfig {
 //                            )
 //                    );
 
-                    roleRepository.findAll().forEach(role ->{
-                                log.info("Role: {},{}",role.getName(), role.getId());
+                    new TransactionTemplate(transactionManager).executeWithoutResult(transactionStatus -> {
+                        roleRepository.findAll().forEach(role ->{
+                                    log.info("Role: {},{}",role.getName(), role.getId());
                                 role.getRoleEnpoints().forEach(roleEnpoint ->{
                                     log.info("endpoint: {}", roleEnpoint.getEndpoint().getEnpoint());
                                 });
-                            }
-                            //log.info("Role: " + role.getName());
+                                }
+                                //log.info("Role: " + role.getName());
 
 //                            role.getEndpoints().forEach(endpoint ->
 //                                    req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName())
 //                            )
-                    );
+                        );
+                    });
+
+
 
                     // Semua request lain harus diautentikasi
                     req.anyRequest().authenticated();

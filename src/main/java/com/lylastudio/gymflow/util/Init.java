@@ -48,13 +48,13 @@ public class Init {
         //insertRole();
         //insertEndpoint();
 
-        companyRepository.findAll().forEach(company -> {
-            log.info("Company: {}, {}", company.getName(), company.getId());
-//            company.getMembers().forEach(member -> {
-//                log.info("Member: {}, {}", member.getFullName(), member.getId());
-//
-//            });
-        });
+//        companyRepository.findAll().forEach(company -> {
+//            log.info("Company: {}, {}", company.getName(), company.getId());
+////            company.getMembers().forEach(member -> {
+////                log.info("Member: {}, {}", member.getFullName(), member.getId());
+////
+////            });
+//        });
 
 
     }
@@ -79,7 +79,7 @@ public class Init {
 
     private void insertRole(){
 
-        Optional<MCompany> byId = companyRepository.findById("59d6ee66-edc6-43a7-97e4-f2dae3b927eb");
+        Optional<MCompany> byId = companyRepository.findById("4c9a0750-7785-465a-a583-0b849a30c7c0");
 
         byId.ifPresent(company -> {
             MRole cashier = new MRole();
