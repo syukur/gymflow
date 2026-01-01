@@ -41,5 +41,8 @@ public class MCompany extends BaseEntityWithId{
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<TSalesOrder> salesOrders;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MRole> roles;
 }
 

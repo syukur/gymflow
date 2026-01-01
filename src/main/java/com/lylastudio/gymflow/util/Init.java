@@ -3,12 +3,17 @@ package com.lylastudio.gymflow.util;
 import com.lylastudio.gymflow.entity.MCompany;
 import com.lylastudio.gymflow.entity.MEnpoint;
 import com.lylastudio.gymflow.entity.MRole;
+import com.lylastudio.gymflow.repository.MCompanyRepository;
 import com.lylastudio.gymflow.repository.MEnpointRespository;
 import com.lylastudio.gymflow.repository.MRoleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -34,12 +39,21 @@ public class Init {
 
     private final MEnpointRespository enpointRespository;
     private final MRoleRepository roleRepository;
+    private final MCompanyRepository companyRepository;
 
 
     @PostConstruct
     private void insert(){
         log.info("INSERT START");
-        insertEndpoint();
+        //insertRole();
+        //insertEndpoint();
+
+        companyRepository.findAll().forEach(company -> {
+            log.info("Company: {}, {}", company.getName(), company.getId());
+            List<MRole> roles = company.getRoles();
+            log.info( String.valueOf(roles.size()) );
+
+        });
     }
 
     private void insertEndpoint() {
@@ -61,6 +75,32 @@ public class Init {
     }
 
     private void insertRole(){
+
+        Optional<MCompany> byId = companyRepository.findById("59d6ee66-edc6-43a7-97e4-f2dae3b927eb");
+
+        byId.ifPresent(company -> {
+            MRole cashier = new MRole();
+            cashier.setName("CASHIER");
+            cashier.setCompany(company);
+
+            MRole owner = new MRole();
+            owner.setName("OWNER");
+            owner.setCompany(company);
+
+            MRole trainer = new MRole();
+            trainer.setName("TRAINER");
+            trainer.setCompany(company);
+
+            roleRepository.save(cashier);
+            roleRepository.save(owner);
+            roleRepository.save(trainer);
+        });
+
+
+
+
+
+
 
     }
 

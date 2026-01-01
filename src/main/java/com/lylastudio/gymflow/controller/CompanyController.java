@@ -39,21 +39,21 @@ public class CompanyController {
 
     @Operation(description = "Get company by id")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<CompanyResponse>> getCompany(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<CompanyResponse>> getCompany(@PathVariable String id) {
         CompanyResponse company = companyService.getCompanyById(id);
         return ResponseEntity.ok(responseUtil.success("company.get.success", company));
     }
 
     @Operation(description = "Update company by id")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<CompanyResponse>> updateCompany(@PathVariable Long id, @Valid @RequestBody CompanyRequest request) {
+    public ResponseEntity<ApiResponse<CompanyResponse>> updateCompany(@PathVariable String id, @Valid @RequestBody CompanyRequest request) {
         CompanyResponse updated = companyService.updateCompany(id, request);
         return ResponseEntity.ok(responseUtil.success("company.update.success", updated));
     }
 
     @Operation(description = "Delete company by id")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteCompany(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteCompany(@PathVariable String id) {
         companyService.deleteCompany(id);
         return ResponseEntity.ok(responseUtil.success("company.delete.success"));
     }

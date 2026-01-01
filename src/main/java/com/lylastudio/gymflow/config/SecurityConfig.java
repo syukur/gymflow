@@ -4,6 +4,7 @@ import com.lylastudio.gymflow.repository.MRoleRepository;
 import com.lylastudio.gymflow.security.CustomAuthenticationEntryPoint;
 import com.lylastudio.gymflow.security.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -63,10 +65,23 @@ public class SecurityConfig {
                     req.requestMatchers(WHITE_LIST_URL).permitAll();
 
                     // Muat aturan dinamis dari database
-                    roleRepository.findAll().forEach(role ->
-                            role.getEndpoints().forEach(endpoint ->
-                                    req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName())
-                            )
+//                    roleRepository.findAll().forEach(role ->
+//                            role.getEndpoints().forEach(endpoint ->
+//                                    req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName())
+//                            )
+//                    );
+
+                    roleRepository.findAll().forEach(role ->{
+                                log.info("Role: {},{}",role.getName(), role.getId());
+                                role.getRoleEnpoints().forEach(roleEnpoint ->{
+                                    log.info("endpoint: {}", roleEnpoint.getEndpoint().getEnpoint());
+                                });
+                            }
+                            //log.info("Role: " + role.getName());
+
+//                            role.getEndpoints().forEach(endpoint ->
+//                                    req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName())
+//                            )
                     );
 
                     // Semua request lain harus diautentikasi

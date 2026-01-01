@@ -36,7 +36,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyResponse getCompanyById(Long id) {
+    public CompanyResponse getCompanyById(String id) {
         MCompany company = companyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("company.not.found"));
         return mapToResponse(company);
@@ -53,7 +53,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public CompanyResponse updateCompany(Long id, CompanyRequest request) {
+    public CompanyResponse updateCompany(String id, CompanyRequest request) {
         MCompany company = companyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("company.not.found"));
 
@@ -65,7 +65,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void deleteCompany(Long id) {
+    public void deleteCompany(String id) {
         companyRepository.deleteById(id);
     }
 
