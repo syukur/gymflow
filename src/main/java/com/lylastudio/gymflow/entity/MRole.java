@@ -28,7 +28,7 @@ public class MRole extends BaseEntityWithId{
 
     // Relasi One-to-Many ke Entity Penghubung (RoleEndpoint)
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<TRoleEnpoint> roleEndpoints;
+    private Set<TRoleEnpoint> endpoints;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<TUserInvitation> invitations;

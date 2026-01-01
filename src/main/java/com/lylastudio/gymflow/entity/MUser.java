@@ -47,4 +47,8 @@ public class MUser extends BaseEntityWithId{
 
     @OneToMany(mappedBy = "cashier", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TSalesOrder> salesOrders;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private MRole role;
 }

@@ -1,5 +1,6 @@
 package com.lylastudio.gymflow.config;
 
+import com.lylastudio.gymflow.repository.MRoleRepository;
 import com.lylastudio.gymflow.security.CustomAuthenticationEntryPoint;
 import com.lylastudio.gymflow.security.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final MRoleRepository roleRepository;
+
 
     // Daftar endpoint yang diizinkan untuk diakses publik
     private static final String[] WHITE_LIST_URL = {
@@ -51,10 +54,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(WHITE_LIST_URL).permitAll()
-                        .anyRequest().authenticated()
-                )
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(WHITE_LIST_URL).permitAll()
+//                        .anyRequest().authenticated()
+//                )
+                .authorizeHttpRequests(req -> {
+                    // Izinkan akses publik ke white list
+                    req.requestMatchers(WHITE_LIST_URL).permitAll();
+
+                    // Muat aturan dinamis dari database
+                    roleRepository.findAll().forEach(role ->
+                            role.getEndpoints().forEach(endpoint ->
+                                    req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName())
+                            )
+                    );
+
+                    // Semua request lain harus diautentikasi
+                    req.anyRequest().authenticated();
+                })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(customAuthenticationEntryPoint)) // Daftarkan entry point
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

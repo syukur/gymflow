@@ -3,6 +3,7 @@ package com.lylastudio.gymflow.security;
 import com.lylastudio.gymflow.entity.MUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -13,10 +14,10 @@ public class AppUser implements UserDetails {
 
     private final MUser user;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return Collections.emptyList();
+//    }
 
     @Override
     public String getPassword() {
@@ -46,5 +47,13 @@ public class AppUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Kita tambahkan peran pengguna sebagai authority dengan prefix "ROLE_"
+        // Spring Security secara otomatis menggunakan prefix ini.
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().getName());
+        return Collections.singletonList(authority);
     }
 }
