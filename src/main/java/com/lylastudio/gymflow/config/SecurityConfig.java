@@ -1,5 +1,7 @@
 package com.lylastudio.gymflow.config;
 
+import com.lylastudio.gymflow.entity.TRoleEnpoint;
+import com.lylastudio.gymflow.repository.MEnpointRespository;
 import com.lylastudio.gymflow.repository.MRoleRepository;
 import com.lylastudio.gymflow.security.CustomAuthenticationEntryPoint;
 import com.lylastudio.gymflow.security.JwtRequestFilter;
@@ -19,6 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.Set;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -26,7 +30,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class SecurityConfig {
 
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final MRoleRepository roleRepository;
+    //private final MRoleRepository roleRepository;
+    private final MEnpointRespository enpointRespository;
 
 
     // Daftar endpoint yang diizinkan untuk diakses publik
@@ -58,37 +63,56 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter, PlatformTransactionManager transactionManager) throws Exception {
         http.csrf(csrf -> csrf.disable())
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(WHITE_LIST_URL).permitAll()
-//                        .anyRequest().authenticated()
-//                )
                 .authorizeHttpRequests(req -> {
+
                     // Izinkan akses publik ke white list
                     req.requestMatchers(WHITE_LIST_URL).permitAll();
 
-                    // Muat aturan dinamis dari database
-//                    roleRepository.findAll().forEach(role ->
-//                            role.getEndpoints().forEach(endpoint ->
-//                                    req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName())
+                    req.requestMatchers("/api/companies").hasRole("OWNER");
+                    req.requestMatchers("/api/members/register").hasAnyRole("OWNER","CASHIER");
+                    req.requestMatchers("/api/members/register").hasRole("CASHIER");
+
+
+//                    endpoint: /api/members/register, hasRole: CASHIER
+//                     endpoint: /api/companies, hasRole: OWNER
+//                     endpoint: /api/members/register, hasRole: OWNER
+//                    new TransactionTemplate(transactionManager).executeWithoutResult(transactionStatus -> {
+//                        // Muat aturan dinamis dari database
+//                        roleRepository.findAll().forEach(role ->
+//                            role.getRoleEnpoints().forEach(endpoint ->{
+//                                req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName());
+//                                log.info("endpoint: {}, hasRole: {}", endpoint.getEndpoint().getEnpoint(), role.getName() );
+//                            }
+//
 //                            )
-//                    );
+//                        );
+//                    });
 
                     new TransactionTemplate(transactionManager).executeWithoutResult(transactionStatus -> {
-                        roleRepository.findAll().forEach(role ->{
-                                    log.info("Role: {},{}",role.getName(), role.getId());
-                                role.getRoleEnpoints().forEach(roleEnpoint ->{
-                                    log.info("endpoint: {}", roleEnpoint.getEndpoint().getEnpoint());
-                                });
+                        // Muat aturan dinamis dari database
+                        enpointRespository.findAll().forEach(enpoint -> {
+                            Set<TRoleEnpoint> roleEnpoints = enpoint.getRoleEnpoints();
+                            if ( !roleEnpoints.isEmpty() ){
+                                if(roleEnpoints.size() > 1){
+                                    StringBuilder sb = new StringBuilder();
+
+                                    roleEnpoints.forEach(roleEnpoint -> {
+                                        sb.append(roleEnpoint.getRole().getName()).append(",");
+                                    });
+
+                                    String hasAnyRole = sb.toString();
+                                    hasAnyRole = hasAnyRole.substring(0, hasAnyRole.length() - 1);
+                                    req.requestMatchers(enpoint.getEnpoint()).hasRole(hasAnyRole);
+                                    log.info("endpoint: {}, hasAnyRole: {}", enpoint.getEnpoint(), hasAnyRole);
+
+                                }else{
+                                    req.requestMatchers(enpoint.getEnpoint()).hasRole(roleEnpoints.iterator().next().getRole().getName());
+                                    log.info("endpoint: {}, hasRole: {}", enpoint.getEnpoint(), roleEnpoints.iterator().next().getRole().getName());
                                 }
-                                //log.info("Role: " + role.getName());
+                            }
+                        });
 
-//                            role.getEndpoints().forEach(endpoint ->
-//                                    req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName())
-//                            )
-                        );
                     });
-
-
 
                     // Semua request lain harus diautentikasi
                     req.anyRequest().authenticated();

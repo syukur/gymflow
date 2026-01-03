@@ -22,9 +22,9 @@ public class MRole extends BaseEntityWithId{
     @Column(name = "description", length = 150)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private MCompany company;
+//    @ManyToOne
+//    @JoinColumn(name = "company_id")
+//    private MCompany company;
 
     // Relasi One-to-Many ke Entity Penghubung (RoleEndpoint)
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -84,15 +84,15 @@ public class Init {
         byId.ifPresent(company -> {
             MRole cashier = new MRole();
             cashier.setName("CASHIER");
-            cashier.setCompany(company);
+           // cashier.setCompany(company);
 
             MRole owner = new MRole();
             owner.setName("OWNER");
-            owner.setCompany(company);
+            //owner.setCompany(company);
 
             MRole trainer = new MRole();
             trainer.setName("TRAINER");
-            trainer.setCompany(company);
+            //trainer.setCompany(company);
 
             roleRepository.save(cashier);
             roleRepository.save(owner);
