@@ -1,7 +1,10 @@
 package com.lylastudio.gymflow.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
@@ -10,9 +13,12 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder
 @Table(name = "m_branch")
-public class MBranch extends BaseEntityWithId {
+public class MCurrency extends BaseEntity {
+
+    @Id
+    @Column(name = "id", length = 3)
+    private String id;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;

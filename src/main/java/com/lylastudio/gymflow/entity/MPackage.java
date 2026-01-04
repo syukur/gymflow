@@ -1,10 +1,7 @@
 package com.lylastudio.gymflow.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import java.util.Set;
@@ -16,6 +13,7 @@ import java.util.Set;
 @Entity
 @Comment("example: 3 month regular, 6 month regular")
 @Table(name = "m_package")
+@Builder
 public class MPackage extends BaseEntityWithId {
 
     @Column(name = "name", nullable = false, length = 100)

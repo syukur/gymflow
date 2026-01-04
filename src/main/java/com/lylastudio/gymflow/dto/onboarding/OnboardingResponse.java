@@ -1,4 +1,4 @@
-package com.lylastudio.gymflow.dto;
+package com.lylastudio.gymflow.dto.onboarding;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OnboardingRequest {
+public class OnboardingResponse {
 
+    private String companyId;
     private String companyName;
-    private String whatsapp;
+    private String phoneNumber;
     private String currency;
     private List<Membership> memberships;
     private List<Branch> branches;

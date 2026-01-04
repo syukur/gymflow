@@ -21,6 +21,8 @@ public class MCompany extends BaseEntityWithId{
     @Column(length = 20)
     private String phoneNumber;
 
+    private String currency;
+
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY)
     private List<MMember> members;
 
