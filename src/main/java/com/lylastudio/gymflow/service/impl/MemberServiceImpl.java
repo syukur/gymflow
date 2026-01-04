@@ -2,9 +2,11 @@ package com.lylastudio.gymflow.service.impl;
 
 import com.lylastudio.gymflow.dto.MemberRequest;
 import com.lylastudio.gymflow.dto.MemberResponse;
+import com.lylastudio.gymflow.entity.MCompany;
 import com.lylastudio.gymflow.entity.MMember;
 import com.lylastudio.gymflow.repository.MMemberRepository;
 import com.lylastudio.gymflow.service.MemberService;
+import com.lylastudio.gymflow.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberResponse registerMember(MemberRequest request) {
 
+
         log.info("Register member request: {}", request);
 
         // Cek jika email sudah terdaftar
@@ -35,6 +38,10 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException("validation.phone.already.exists");
         });
 
+        String companyId = SecurityUtils.getCurrentCompanyId();
+        MCompany company =new MCompany();
+        company.setId(companyId);
+
         MMember member = MMember.builder()
                 .fullName(request.getFullName())
                 .email(request.getEmail())
@@ -43,6 +50,7 @@ public class MemberServiceImpl implements MemberService {
                 .membershipType(request.getMembershipType())
                 .registeredAt(LocalDate.now())
                 .address(request.getAddress())
+                .company(company)
                 .build();
 
 

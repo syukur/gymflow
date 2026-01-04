@@ -8,6 +8,7 @@ import com.lylastudio.gymflow.dto.GoogleAuthRequest;
 import com.lylastudio.gymflow.dto.GoogleAuthResponse;
 import com.lylastudio.gymflow.entity.MUser;
 import com.lylastudio.gymflow.repository.MUserRepository;
+import com.lylastudio.gymflow.security.AppUser;
 import com.lylastudio.gymflow.security.JwtUtil;
 import com.lylastudio.gymflow.service.GoogleAuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -78,11 +79,14 @@ public class GoogleAuthServiceImpl implements GoogleAuthService {
                 userService.registerGoogleUser(email, name, sub)
         );
 
-        // 2. Buat JWT token
-        String accessToken  = jwtUtil.generateToken(userDetails);
-        String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+        MUser user = userService.loadRawUserByUsername(userDetails.getUsername());
+        AppUser appUser = new AppUser(user);
 
-        MUser user = userRepository.findByEmail(email).orElseThrow();
+        // 2. Buat JWT token
+        String accessToken  = jwtUtil.generateToken(appUser, user.getCompany().getId());
+        String refreshToken = jwtUtil.generateRefreshToken(appUser, user.getRefreshToken());
+
+        //MUser user = userRepository.findByEmail(email).orElseThrow();
 
         user.setRefreshToken(refreshToken);
         userRepository.save(user);

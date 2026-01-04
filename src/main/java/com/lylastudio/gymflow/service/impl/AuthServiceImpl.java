@@ -3,6 +3,7 @@ package com.lylastudio.gymflow.service.impl;
 import com.lylastudio.gymflow.dto.*;
 import com.lylastudio.gymflow.entity.MUser;
 import com.lylastudio.gymflow.repository.MUserRepository;
+import com.lylastudio.gymflow.security.AppUser;
 import com.lylastudio.gymflow.security.JwtUtil;
 import com.lylastudio.gymflow.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +46,12 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
 
-        UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
-        String jwt = jwtUtil.generateToken(userDetails);
-        String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+        MUser user = userService.loadRawUserByUsername(authRequest.getUsername());
+        UserDetails userDetails = new AppUser(user);
+        String jwt = jwtUtil.generateToken(userDetails, user.getCompany().getId());
+        String refreshToken = jwtUtil.generateRefreshToken(userDetails, user.getCompany().getId());
 
-        MUser user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        //MUser user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
         user.setRefreshToken(refreshToken);
         userRepository.save(user);
 
@@ -67,8 +69,10 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Invalid refresh token");
         }
 
-        UserDetails userDetails = userService.loadUserByUsername(username);
-        String newJwt = jwtUtil.generateToken(userDetails);
+        //UserDetails userDetails = userService.loadUserByUsername(username);
+        UserDetails userDetails = new AppUser(user);
+
+        String newJwt = jwtUtil.generateToken(userDetails, user.getCompany().getId());
 
         return new AuthResponse(newJwt, refreshToken);
     }
