@@ -17,14 +17,15 @@ public class OnboardingResponse {
     private String companyName;
     private String phoneNumber;
     private String currency;
-    private List<Membership> memberships;
+    private List<Package> packages;
     private List<Branch> branches;
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Membership {
+    public static class Package {
+       private String id;
         private String name;
         private Double price;
         private Integer duration; // Duration in days or months, depending on your logic
@@ -35,6 +36,7 @@ public class OnboardingResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Branch {
+        private String id;
         private String name;
         private String address;
     }

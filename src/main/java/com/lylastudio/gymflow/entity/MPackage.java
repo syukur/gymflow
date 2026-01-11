@@ -30,7 +30,7 @@ public class MPackage extends BaseEntityWithId {
     private boolean gymAccess;
 
     @Column(name = "price")
-    private long price;
+    private Double price;
 
     @ManyToOne
     @JoinColumn(name = "company_id")

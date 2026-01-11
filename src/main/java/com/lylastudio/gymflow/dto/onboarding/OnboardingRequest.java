@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OnboardingRequest {
 
-    private String Name;
+    private String companyName;
     private String phoneNumber;
     private String currency;
     private List<Package> packages;
