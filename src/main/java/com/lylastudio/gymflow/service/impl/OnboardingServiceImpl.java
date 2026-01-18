@@ -81,6 +81,12 @@ public class OnboardingServiceImpl implements OnboardingService {
         MUser user = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("user.not.found"));
 
+        // 5. validate is user alredy onboarded
+        if(user.getCompany() != null){
+            throw new RuntimeException("user.already.onboarded");
+        }
+
+
         user.setCompany(company);
 
         companyRepository.save(company);
@@ -90,6 +96,7 @@ public class OnboardingServiceImpl implements OnboardingService {
         return mapToResponse(company);
 
     }
+
 
     private OnboardingResponse mapToResponse(MCompany company) {
 
