@@ -20,6 +20,9 @@ public class OnboardingResponse {
     private List<Package> packages;
     private List<Branch> branches;
 
+    private String newAccessToken;
+    private String newRefreshToken;
+
     @Data
     @Builder
     @NoArgsConstructor

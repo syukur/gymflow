@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Transactional
     public UserDetails registerGoogleUser( String email, String name, String sub) {
         MUser user = new MUser();
-        user.setUsername(name);
+        user.setUsername(email);
+        user.setSureName(name);
         user.setPassword("");
         user.setSub(sub);
         user.setAuthProvider("GOOGLE");

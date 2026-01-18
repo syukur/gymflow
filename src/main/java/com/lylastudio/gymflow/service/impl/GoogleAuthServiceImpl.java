@@ -6,31 +6,42 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.lylastudio.gymflow.dto.GoogleAuthRequest;
 import com.lylastudio.gymflow.dto.GoogleAuthResponse;
+import com.lylastudio.gymflow.entity.MEnpoint;
+import com.lylastudio.gymflow.entity.MRole;
 import com.lylastudio.gymflow.entity.MUser;
+import com.lylastudio.gymflow.entity.TRoleEnpoint;
+import com.lylastudio.gymflow.repository.MEnpointRespository;
+import com.lylastudio.gymflow.repository.MRoleRepository;
 import com.lylastudio.gymflow.repository.MUserRepository;
 import com.lylastudio.gymflow.security.AppUser;
 import com.lylastudio.gymflow.security.JwtUtil;
 import com.lylastudio.gymflow.service.GoogleAuthService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class GoogleAuthServiceImpl implements GoogleAuthService {
 
     private final GoogleIdTokenVerifier verifier;
-    private final UserServiceImpl userService;
-    private final MUserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final String CLIENT_ID = "422189884154-o53l490aqm132t5542ki4mli0i61oe8m.apps.googleusercontent.com";
+    private final MRoleRepository roleRepository;
+    private final MEnpointRespository enpointRespository;
+    private final MUserRepository userRepository;
 
-    public GoogleAuthServiceImpl(UserServiceImpl userService, MUserRepository userRepository, JwtUtil jwtUtil) {
+    public GoogleAuthServiceImpl(MRoleRepository roleRepository, MEnpointRespository enpointRespository, MUserRepository userRepository, JwtUtil jwtUtil) {
 
-        this.userService = userService;
+        this.roleRepository = roleRepository;
+        this.enpointRespository = enpointRespository;
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
 
@@ -75,22 +86,40 @@ public class GoogleAuthServiceImpl implements GoogleAuthService {
 
         log.info("payload: {},  email: {}, name: {}, sub: {}",payload, email,name,sub);
 
-        UserDetails userDetails= userService.loadByEmail(email).orElseGet(()->
-                userService.registerGoogleUser(email, name, sub)
-        );
 
-        MUser user = userService.loadRawUserByUsername(userDetails.getUsername());
+        MUser user = userRepository.findByEmail(email).orElseGet(() -> {
+
+            MRole role = roleRepository.findByName("OWNER").orElseThrow(() ->  new BadCredentialsException("auth.bad.credentials"));
+
+            MUser usr = new MUser();
+            usr.setUsername(email);
+            usr.setSureName(name);
+            usr.setPassword("");
+            usr.setSub(sub);
+            usr.setAuthProvider("GOOGLE");
+            usr.setEmail(email);
+            usr.setRole(role);
+            userRepository.save(usr);
+            return usr;
+        });
+
+
         AppUser appUser = new AppUser(user);
 
         // 2. Buat JWT token
-        String accessToken  = jwtUtil.generateToken(appUser, user.getCompany().getId());
-        String refreshToken = jwtUtil.generateRefreshToken(appUser, user.getRefreshToken());
+        String accessToken;
+        String refreshToken;
+        try {
+            accessToken  = jwtUtil.generateToken(appUser, user.getCompany().getId());
+            refreshToken = jwtUtil.generateRefreshToken(appUser, user.getCompany().getId());
+        }catch (NullPointerException npe){
+            accessToken  = jwtUtil.generateToken(appUser, null);
+            refreshToken = jwtUtil.generateRefreshToken(appUser, null);
+        }
 
-        //MUser user = userRepository.findByEmail(email).orElseThrow();
 
         user.setRefreshToken(refreshToken);
         userRepository.save(user);
-
 
         // 3. Response
         return new GoogleAuthResponse(accessToken, refreshToken, email, name);

@@ -92,16 +92,6 @@ public class OnboardingServiceImpl implements OnboardingService {
     }
 
     private OnboardingResponse mapToResponse(MCompany company) {
-        //return OnboardingResponse.builder().build();
-
-
-//        List<OnboardingResponse.Package> packages = null;
-//        if (company.getPackages() != null) {
-//            packages = company.getPackages()
-//                            .stream()
-//                            .map(this::mapPackage)
-//                            .toList();
-//        }
 
         List<OnboardingResponse.Package> packages =
                 Optional.ofNullable(company.getPackages())

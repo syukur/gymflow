@@ -12,4 +12,5 @@ public interface MUserRepository extends JpaRepository<MUser, String> {
 
     Optional<MUser> findByEmail(String email);
 
+
 }

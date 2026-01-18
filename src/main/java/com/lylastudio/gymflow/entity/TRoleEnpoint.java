@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 public class TRoleEnpoint extends  BaseEntity {
     @EmbeddedId
-    private TRoleEndpointId id;
+    private TRoleEndpointId id = new TRoleEndpointId();
 
     // Foreign Key ke Mrole (sisi Many)
     @ManyToOne(fetch = FetchType.LAZY)

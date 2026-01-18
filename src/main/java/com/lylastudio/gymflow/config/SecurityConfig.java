@@ -68,26 +68,6 @@ public class SecurityConfig {
                     // Izinkan akses publik ke white list
                     req.requestMatchers(WHITE_LIST_URL).permitAll();
 
-                    req.requestMatchers("/api/companies").hasRole("OWNER");
-                    req.requestMatchers("/api/members/register").hasAnyRole("OWNER","CASHIER");
-                    req.requestMatchers("/api/members/register").hasRole("CASHIER");
-
-
-//                    endpoint: /api/members/register, hasRole: CASHIER
-//                     endpoint: /api/companies, hasRole: OWNER
-//                     endpoint: /api/members/register, hasRole: OWNER
-//                    new TransactionTemplate(transactionManager).executeWithoutResult(transactionStatus -> {
-//                        // Muat aturan dinamis dari database
-//                        roleRepository.findAll().forEach(role ->
-//                            role.getRoleEnpoints().forEach(endpoint ->{
-//                                req.requestMatchers(endpoint.getEndpoint().getEnpoint()).hasRole(role.getName());
-//                                log.info("endpoint: {}, hasRole: {}", endpoint.getEndpoint().getEnpoint(), role.getName() );
-//                            }
-//
-//                            )
-//                        );
-//                    });
-
                     new TransactionTemplate(transactionManager).executeWithoutResult(transactionStatus -> {
                         // Muat aturan dinamis dari database
                         enpointRespository.findAll().forEach(enpoint -> {
